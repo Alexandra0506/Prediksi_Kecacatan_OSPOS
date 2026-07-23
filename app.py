@@ -256,4 +256,4 @@ if predict_button:
 # =========================================================
 
 st.write("---")
-st.caption("Sistem prediksi defect menggunakan TF-IDF, software metrics, dan feature fusion.")
+st.caption("Sistem klasifikasi defect menggunakan TF-IDF, software metrics, dan feature fusion.")
