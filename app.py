@@ -174,8 +174,8 @@ def predict_risk(source_code):
 
 st.markdown("""
 <div class="title-box">
-    <h1 style="color: white !important;">🧠 Software Defect Prediction</h1>
-    <p style="color: white !important;">Prediksi tingkat risiko defect pada modul Point of Sale berbasis Open Source POS.</p>
+    <h1 style="color: white !important;">🧠 Software Defect Risk Level Classification</h1>
+    <p style="color: white !important;">Klasifikasi tingkat risiko defect pada modul Point of Sale berbasis Open Source POS.</p>
 </div>
 """, unsafe_allow_html=True)
 
