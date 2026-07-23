@@ -1,93 +1,14 @@
-# import streamlit as st
-# import joblib
-# import pandas as pd
-# from scipy.sparse import hstack, csr_matrix
-
-# # =========================================================
-# # LOAD MODEL DAN PREPROCESSING OBJECT
-# # =========================================================
-
-# model = joblib.load("best_defect_prediction_model.pkl")
-# vectorizer = joblib.load("tfidf_vectorizer.pkl")
-# scaler = joblib.load("numeric_scaler.pkl")
-# label_encoder = joblib.load("label_encoder.pkl")
-
-# # =========================================================
-# # STREAMLIT UI
-# # =========================================================
-
-# st.title("Prediksi Defect Modul OSPOS")
-# st.write("Aplikasi ini digunakan untuk memprediksi tingkat risiko defect pada modul Point of Sale.")
-
-# st.subheader("Input Source Code")
-
-# source_code = st.text_area(
-#     "Masukkan source code modul:",
-#     height=300
-# )
-
-# st.subheader("Input Software Metrics")
-
-# loc = st.number_input("LOC (Lines of Code)", min_value=0, value=0)
-# cc = st.number_input("CC (Cyclomatic Complexity)", min_value=0, value=0)
-# jml_karakter = st.number_input("Jumlah Karakter", min_value=0, value=0)
-# jml_token = st.number_input("Jumlah Token", min_value=0, value=0)
-# cbo = st.number_input("CBO", min_value=0, value=0)
-
-# # =========================================================
-# # PREDIKSI
-# # =========================================================
-
-# if st.button("Prediksi Risk Level"):
-
-#     if source_code.strip() == "":
-#         st.warning("Source code belum diisi.")
-#     else:
-#         # TF-IDF source code
-#         X_text = vectorizer.transform([source_code])
-
-#         # Numeric features
-#         numeric_data = pd.DataFrame([{
-#             "LOC": loc,
-#             "CC": cc,
-#             "Jml_Karakter": jml_karakter,
-#             "Jml_Token": jml_token,
-#             "CBO": cbo
-#         }])
-
-#         X_numeric_scaled = scaler.transform(numeric_data)
-#         X_numeric_scaled = csr_matrix(X_numeric_scaled)
-
-#         # Feature fusion
-#         X_final = hstack([X_text, X_numeric_scaled])
-
-#         # Prediction
-#         prediction = model.predict(X_final)
-#         risk_level = label_encoder.inverse_transform(prediction)[0]
-
-#         st.subheader("Hasil Prediksi")
-#         st.success(f"Risk Level: {risk_level}")
-
-#         if risk_level == "Low Risk":
-#             st.info("Modul memiliki risiko defect rendah.")
-#         elif risk_level == "Medium Risk":
-#             st.warning("Modul memiliki risiko defect sedang.")
-#         elif risk_level == "High Risk":
-#             st.error("Modul memiliki risiko defect tinggi dan perlu diprioritaskan untuk pengujian.")
-
 import re
 import joblib
 import streamlit as st
 import pandas as pd
-
-
 
 # =========================================================
 # PAGE CONFIG
 # =========================================================
 
 st.set_page_config(
-    page_title="Defect Prediction OSPOS",
+    page_title="Defect Classification OSPOS",
     page_icon="🧠",
     layout="wide"
 )
@@ -280,7 +201,7 @@ with right:
     """, unsafe_allow_html=True)
 
     st.write("")
-    predict_button = st.button("🔍 Prediksi Risk Level", type="primary", use_container_width=True)
+    predict_button = st.button("🔍 Klasifikasi Risk Level", type="primary", use_container_width=True)
 
 # =========================================================
 # RESULT
@@ -293,7 +214,7 @@ if predict_button:
         prediction_label, probability_df, loc, cc, jml_karakter, jml_token = predict_risk(source_code)
 
         st.write("---")
-        st.subheader("📊 Hasil Prediksi")
+        st.subheader("📊 Hasil Klasifikasi")
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -316,14 +237,14 @@ if predict_button:
 
         st.markdown(f"""
         <div class="result-card">
-            <h2 style="color: black;">{emoji} Predicted Risk Level</h2>
+            <h2 style="color: black;">{emoji} Tingkat Risiko Kecacatan</h2>
             <h1 style="color:{color};">{prediction_label}</h1>
         </div>
         """, unsafe_allow_html=True)
 
         if probability_df is not None:
             st.write("")
-            st.subheader("📈 Probabilitas Prediksi")
+            st.subheader("📈 Probabilitas Klasifikasi Tingkat Risiko Kecacatan")
             st.dataframe(probability_df, use_container_width=True)
 
             st.bar_chart(
